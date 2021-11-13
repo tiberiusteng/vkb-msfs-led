@@ -13,8 +13,9 @@ Steps to run:
 6. run `python3 -m pip install -r requirements.txt`
 7. run `copy RequestList.py Lib\site-packages\SimConnect\RequestList.py`
 8. run `copy vkb_device_init.py Lib\site-packages\vkb\devices\__init__.py`
-9. run `copy nxtext.py Lib\site-packages\vkb\devices\nxtext.py`
-10. run `python3 vkb-msfs-leds.py` after you started MSFS.
+9. run `copy vkb_led_init.py Lib\site-packages\vkb\led\__init__.py`
+10. run `copy nxtext.py Lib\site-packages\vkb\devices\nxtext.py`
+11. run `python3 vkb-msfs-leds.py` after you started MSFS.
 
 When you running `python3 -m pip install -r requirements.txt`, you may 
 encounter `LINK : fatal error LNK1158: cannot run 'rc.exe'`. If this occurs, 
@@ -26,6 +27,9 @@ add Windows SDK bin directory to your path, like: `set PATH=C:\Program Files (x8
 `AUTOPILOT_GLIDESLOPE_ARM` and `AUTOPILOT_GLIDESLOPE_ACTIVE`.
 
 `vkb_device_init.py` and `nxtext.py` added hardware ID of NXT EXT USB-HID.
+
+`vkb_led_init.py` changes how much LED configs can be updated in single pass 
+(yeah this is probably problemsome and I should use other ways)
 
 You'll need to use VKBDevCfg to change LED mode of all LEDs on FSM-GA to OFF, 
 or they will behave erraticly (the program can't override LED presets defined 

@@ -23,6 +23,10 @@ ALT_LED = FSM_LED_BASE + 4
 
 ALT_MODE = 50
 APPR_MODE = 51
+GEAR_MODE = 52
+
+SEM_LED_BASE = 10
+GEAR_LED_BASE = SEM_LED_BASE + 5
 
 # { led: simvar }
 ledmap = {
@@ -45,7 +49,11 @@ ledmap = {
         aq.find('AUTOPILOT_APPROACH_ACTIVE'),
         aq.find('AUTOPILOT_APPROACH_CAPTURED'),
         aq.find('AUTOPILOT_GLIDESLOPE_ARM'),
-        aq.find('AUTOPILOT_GLIDESLOPE_ACTIVE')]
+        aq.find('AUTOPILOT_GLIDESLOPE_ACTIVE')],
+
+    GEAR_LED_BASE + 0: aq.find('GEAR_LEFT_POSITION'),
+    GEAR_LED_BASE + 1: aq.find('GEAR_CENTER_POSITION'),
+    GEAR_LED_BASE + 2: aq.find('GEAR_RIGHT_POSITION')
 }
 
 previous_state = {}
@@ -83,6 +91,14 @@ while not sm.quit:
                     led_config.append(led.LEDConfig(APPR_LED, led.ColorMode.COLOR1_p_2, led.LEDMode.SLOW_BLINK, '#444', '#fff'))
                 else:
                     led_config.append(led.LEDConfig(APPR_LED, led.ColorMode.COLOR1, led.LEDMode.OFF, '#fff', '#fff'))
+
+            elif k >= GEAR_LED_BASE and k <= GEAR_LED_BASE + 2:
+                if v == 0.0: # gear is up
+                    led_config.append(led.LEDConfig(k, led.ColorMode.COLOR2, led.LEDMode.CONSTANT, '#fff', '#fff'))
+                elif v == 1.0: # gear is down
+                    led_config.append(led.LEDConfig(k, led.ColorMode.COLOR1, led.LEDMode.CONSTANT, '#fff', '#fff'))
+                else: # gear in transit
+                    led_config.append(led.LEDConfig(k, led.ColorMode.COLOR1_p_2, led.LEDMode.SLOW_BLINK, '#444', '#fff'))
 
             else:
                 # generic flag, 1.0 = BRIGHT GREEN LED, 0.0 = dim green led
